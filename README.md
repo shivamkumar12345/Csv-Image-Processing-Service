@@ -2,6 +2,50 @@
 
 This project provides an image processing service that can handle CSV uploads containing product names and image URLs, compress the images, upload them to the cloud, and store the processed data in a MongoDB database. The service also includes functionalities to check the processing status of uploaded files.
 
+# Low-Level Design (LLD) for Image Processing Service
+
+# Component Descriptions
+1. Express Server
+    Role: Entry point of the application, handling incoming HTTP requests and routing them to the appropriate handlers.
+    Key Files:
+    app.js: Main application file, sets up middleware, routes, and starts the server.
+    router/productRoute.js: Defines routes for uploading CSV files and checking status.
+2. Multer Middleware
+    Role: Handles multipart/form-data for file uploads, ensuring files are saved to the correct directory with unique filenames.
+    Key Files:
+    middleware/fileUpload.js: Configures Multer to handle file uploads, defines storage location, filename format, and file type validation.
+3. Image Processing Service
+    Role: Manages the entire image processing pipeline, including CSV parsing, image downloading, compression, and cloud uploading.
+    Key Files:
+    services/imageProcess.js: Contains functions for downloading images, compressing images, uploading to Cloudinary, and managing the processing status.
+    services/cloudUpload.js: Handles interaction with Cloudinary for image uploads.
+
+# Workflow:
+    CSV Parsing: Converts uploaded CSV files to JSON objects.
+    Image Downloading: Downloads images from URLs specified in the CSV.
+    Image Compression: Compresses downloaded images using the compress-images library.
+    Cloud Uploading: Uploads compressed images to Cloudinary and retrieves URLs.
+    Status Management: Updates the status of each request and handles cleanup of temporary files.
+
+4. Database Service
+    Role: Manages the connection to MongoDB and handles the insertion of processed image data.
+    Key Files:
+    services/db.js: Configures and establishes the connection to MongoDB.
+    models/products.js: Defines the schema for storing product data.
+
+5. Cloudinary Service
+    Role: Uploads compressed images to Cloudinary and returns URLs.
+    Key Files:
+    services/cloudUpload.js: Contains the function to upload images to Cloudinary.
+
+6. Status Check Endpoint
+    Role: Allows users to check the status of their image processing request.
+    Key Files:
+    router/productRoute.js: Defines the endpoint to get the status of a request.
+
+
+
+
 ## Table of Contents
 
 - [Installation](#installation)
